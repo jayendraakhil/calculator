@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Professional Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calculator {
+            background-color: #444;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .display {
+            background-color: #333;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            text-align: right;
+            color: #fff;
+        }
+
+        .result {
+            font-size: 30px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 5px;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 20px;
+            background-color: #666;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .button.span-two {
+            grid-column-end: span 2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <div class="display">
+            <div class="result" id="result">0</div>
+        </div>
+        <div class="buttons">
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="deleteDigit()">DEL</button>
+            <button onclick="appendSymbol('/')">÷</button>
+            <button onclick="appendSymbol('*')">×</button>
+            <button onclick="appendDigit('7')">7</button>
+            <button onclick="appendDigit('8')">8</button>
+            <button onclick="appendDigit('9')">9</button>
+            <button onclick="appendSymbol('-')">-</button>
+            <button onclick="appendDigit('4')">4</button>
+            <button onclick="appendDigit('5')">5</button>
+            <button onclick="appendDigit('6')">6</button>
+            <button onclick="appendSymbol('+')">+</button>
+            <button onclick="appendDigit('1')">1</button>
+            <button onclick="appendDigit('2')">2</button>
+            <button onclick="appendDigit('3')">3</button>
+            <button class="span-two" onclick="calculate()">=</button>
+            <button class="span-two" onclick="appendDigit('0')">0</button>
+            <button onclick="appendSymbol('.')">.</button>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById('result');
+        let expression = '';
+
+        function appendDigit(digit) {
+            if (expression === '0') {
+                expression = digit;
+            } else {
+                expression += digit;
+            }
+            updateDisplay();
+        }
+
+        function appendSymbol(symbol) {
+            if (expression !== '' && isOperator(expression[expression.length - 1])) {
+                expression = expression.slice(0, -1);
+            }
+            expression += symbol;
+            updateDisplay();
+        }
+
+        function calculate() {
+            try {
+                let result = eval(expression);
+                expression = String(result);
+                updateDisplay();
+            } catch (error) {
+                expression = 'Error';
+                updateDisplay();
+            }
+        }
+
+        function clearDisplay() {
+            expression = '';
+            updateDisplay();
+        }
+
+        function deleteDigit() {
+            expression = expression.slice(0, -1);
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            display.textContent = expression;
+        }
+
+        function isOperator(symbol) {
+            return symbol === '+' || symbol === '-' || symbol === '*' || symbol === '/';
+        }
+
+    </script>
+</body>
+
+</html>
